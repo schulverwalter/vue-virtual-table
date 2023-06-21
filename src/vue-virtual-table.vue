@@ -413,7 +413,7 @@
                       'justify-content': item.justifyContent || 'center'
                     }"
                   >
-                    <VPopover trigger="hover" placement="right">
+                    <VTooltip trigger="hover" placement="right">
                       <span>
                         <span
                           v-if="item.prefix && getDescendantProp(props.item, item.prop)"
@@ -497,7 +497,7 @@
                           ></base-icon>
                         </div>
                       </template>
-                    </VPopover>
+                    </VTooltip>
                   </div>
                   <div
                     class="item-cell-inner"
@@ -598,7 +598,7 @@ import BaseTooltip from "./components/base-tooltip.vue";
 import BaseIcon from "./components/base-icon.vue";
 import "vue-resize/dist/vue-resize.css";
 import { _uuid, exportCsv, deepCopy, debounce } from "./utils/index.js";
-import { VPopover } from "v-tooltip";
+import { VTooltip } from "floating-vue";
 
 export default {
   name: "VueVirtualTable",
@@ -615,7 +615,7 @@ export default {
     BaseCheckgroup,
     BaseTooltip,
     BaseIcon,
-    VPopover
+    VTooltip
   },
   props: {
     config: {
