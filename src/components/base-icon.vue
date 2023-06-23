@@ -1,16 +1,17 @@
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" 
-    :width="width" 
-    :height="height" 
-    viewBox="0 0 32 32" 
-    :aria-labelledby="iconName" 
-    role="presentation"
-  >
-    <title :id="iconName" lang="en">{{iconName}} icon</title>
-    <g :fill="iconColor">
-      <component :is="iconName" />
-    </g>
-  </svg>
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        :width="width"
+        :height="height"
+        viewBox="0 0 32 32"
+        :aria-labelledby="iconName"
+        role="presentation"
+    >
+        <title :id="iconName" lang="en">{{ iconName }} icon</title>
+        <g :fill="iconColor">
+            <component :is="iconName" />
+        </g>
+    </svg>
 </template>
 
 <script>
@@ -23,40 +24,40 @@ import cloudDownloadAlt from "./icons/cloudDownloadAlt.vue";
 import documentsAlt from "./icons/documentsAlt.vue";
 
 export default {
-  components: {
-    arrowCarrotDown,
-    arrowCarrotRight,
-    boxChecked,
-    boxEmpty,
-    closeAlt2,
-    cloudDownloadAlt,
-    documentsAlt
-  },
-  props: {
-    iconName: {
-      type: String,
-      default: "box"
+    components: {
+        arrowCarrotDown,
+        arrowCarrotRight,
+        boxChecked,
+        boxEmpty,
+        closeAlt2,
+        cloudDownloadAlt,
+        documentsAlt,
     },
-    width: {
-      type: [Number, String],
-      default: 18
+    props: {
+        iconName: {
+            type: String,
+            default: "box",
+        },
+        width: {
+            type: [Number, String],
+            default: 18,
+        },
+        height: {
+            type: [Number, String],
+            default: 18,
+        },
+        iconColor: {
+            type: String,
+            default: "currentColor",
+        },
     },
-    height: {
-      type: [Number, String],
-      default: 18
-    },
-    iconColor: {
-      type: String,
-      default: "currentColor"
-    }
-  }
 };
 </script>
 
 <style scoped>
 svg {
-  display: inline-block;
-  vertical-align: baseline;
-  margin-bottom: -2px; /* yes, I'm that particular about formatting */
+    display: inline-block;
+    vertical-align: baseline;
+    margin-bottom: -2px; /* yes, I'm that particular about formatting */
 }
 </style>

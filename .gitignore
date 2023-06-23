@@ -1,2 +1,8 @@
 node_modules/
 yarn.lock
+.direnv
+.env*
+*.tgz
+.helix
+package-lock.json
+jsconfig.json

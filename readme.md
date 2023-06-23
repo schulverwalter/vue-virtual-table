@@ -5,8 +5,8 @@
 
 Vue table component with virtual dom and easy api.
 
-- Keep smooth when the data reachs thousands of rows or even more.
-- Easy to use with a simple config.
+-   Keep smooth when the data reachs thousands of rows or even more.
+-   Easy to use with a simple config.
 
 [live demo](https://waningflow.com/vue-virtual-table/)
 
@@ -28,39 +28,53 @@ A simplest example:
 
 ```html
 <template>
-  <vue-virtual-table :config="tableConfig" :data="tableData"> </vue-virtual-table>
+    <vue-virtual-table :config="tableConfig" :data="tableData">
+    </vue-virtual-table>
 </template>
 
 <script>
-  import VueVirtualTable from 'vue-virtual-table'
-  export default {
-    components: {
-      VueVirtualTable
-    },
-    data: () => ({
-      tableConfig: [{ prop: 'user' }, { prop: 'age' }],
-      tableData: [{ user: 'a1', age: 20 }, { user: 'a2', age: 21 }, { user: 'a3', age: 23 }]
-    })
-  }
+    import VueVirtualTable from "vue-virtual-table";
+    export default {
+        components: {
+            VueVirtualTable,
+        },
+        data: () => ({
+            tableConfig: [{ prop: "user" }, { prop: "age" }],
+            tableData: [
+                { user: "a1", age: 20 },
+                { user: "a2", age: 21 },
+                { user: "a3", age: 23 },
+            ],
+        }),
+    };
 </script>
 ```
 
 Every item of the config refers to a column. When you don't set sepcific 'name' of the table column header, it will uses the 'prop' value as default. Or you can set the tableConfig like:
 
 ```js
-tableConfig: [{ prop: 'user', name: 'User Name' }, { prop: 'age', name: 'Age' }]
+tableConfig: [
+    { prop: "user", name: "User Name" },
+    { prop: "age", name: "Age" },
+];
 ```
 
 And if you want to search in the 'user' column, set the tableConfig like:
 
 ```js
-tableConfig: [{ prop: 'user', name: 'User Name', searchable: true }, { prop: 'age', name: 'Age' }]
+tableConfig: [
+    { prop: "user", name: "User Name", searchable: true },
+    { prop: "age", name: "Age" },
+];
 ```
 
 For the 'age' column which is a set of number, you'd better use 'numberFilter' to filter numbers with "<", ">", "between" etc.
 
 ```js
-tableConfig: [{ prop: 'user', name: 'User Name', searchable: true }, { prop: 'age', name: 'Age', numberFilter: true }]
+tableConfig: [
+    { prop: "user", name: "User Name", searchable: true },
+    { prop: "age", name: "Age", numberFilter: true },
+];
 ```
 
 There are many convenient features hard to explain one by one.
@@ -68,61 +82,61 @@ Here is a complex example and you can get more info in the tables below the exam
 
 ```html
 <template>
-  <vue-virtual-table
-    :config="tableConfig"
-    :data="tableData"
-    :height="800"
-    :itemHeight="55"
-    :minWidth="1000"
-    :selectable="true"
-    :enableExport="true"
-    v-on:changeSelection="handleSelectionChange"
-  >
-    <template slot-scope="scope" slot="actionCommon">
-      <button @click="edit(scope.index, scope.row)">Edit</button>
-      <button @click="del(scope.index, scope.row)">Delete</button>
-    </template>
-  </vue-virtual-table>
+    <vue-virtual-table
+        :config="tableConfig"
+        :data="tableData"
+        :height="800"
+        :itemHeight="55"
+        :minWidth="1000"
+        :selectable="true"
+        :enableExport="true"
+        v-on:changeSelection="handleSelectionChange"
+    >
+        <template slot-scope="scope" slot="actionCommon">
+            <button @click="edit(scope.index, scope.row)">Edit</button>
+            <button @click="del(scope.index, scope.row)">Delete</button>
+        </template>
+    </vue-virtual-table>
 </template>
 
 <script>
-  import VueVirtualTable from 'vue-virtual-table'
-  export default {
-    components: {
-      VueVirtualTable
-    },
-    data: () => ({
-      tableConfig: [
-        { prop: '_index', name: '#', width: 80 },
-        {
-          prop: 'user',
-          name: 'User',
-          searchable: true,
-          sortable: true,
-          summary: 'COUNT'
+    import VueVirtualTable from "vue-virtual-table";
+    export default {
+        components: {
+            VueVirtualTable,
         },
-        { prop: 'age', name: 'Age', numberFilter: true },
-        { prop: 'city', name: 'City', filterable: true },
-        { prop: '_action', name: 'Action', actionName: 'actionCommon' }
-      ],
-      tableData: [
-        { user: 'a1', age: 20, city: 'aaaa' },
-        { user: 'a2', age: 21, city: 'bbbb' },
-        { user: 'a3', age: 23, city: 'aaaa' }
-      ]
-    }),
-    methods: {
-      handleSelectionChange(rows) {
-        console.log(rows)
-      },
-      edit(index, row) {
-        console.log(index)
-      },
-      del(index, row) {
-        console.log(index)
-      }
-    }
-  }
+        data: () => ({
+            tableConfig: [
+                { prop: "_index", name: "#", width: 80 },
+                {
+                    prop: "user",
+                    name: "User",
+                    searchable: true,
+                    sortable: true,
+                    summary: "COUNT",
+                },
+                { prop: "age", name: "Age", numberFilter: true },
+                { prop: "city", name: "City", filterable: true },
+                { prop: "_action", name: "Action", actionName: "actionCommon" },
+            ],
+            tableData: [
+                { user: "a1", age: 20, city: "aaaa" },
+                { user: "a2", age: 21, city: "bbbb" },
+                { user: "a3", age: 23, city: "aaaa" },
+            ],
+        }),
+        methods: {
+            handleSelectionChange(rows) {
+                console.log(rows);
+            },
+            edit(index, row) {
+                console.log(index);
+            },
+            del(index, row) {
+                console.log(index);
+            },
+        },
+    };
 </script>
 ```
 
@@ -143,15 +157,15 @@ Here is a complex example and you can get more info in the tables below the exam
 | hoverHighlight | Boolean | Whether to hightlight current row.      | No       | true    |
 | selectable     | Boolean | Whether row is selectable.              | No       | false   |
 | enableExport   | Boolean | Whether to show export-to-table button  | No       | false   |
-| language       | String  | Language from ['en', 'cn', 'ptBR']              | No       | 'cn'    |
+| language       | String  | Language from ['en', 'cn', 'ptBR']      | No       | 'cn'    |
 
 ### Table Events
 
-| name            | parameters | description                   |
-| --------------- | ---------- | ----------------------------- |
-| changeSelection | rows       | When the selected rows change |
-| click           | row, $event| When row is clicked           |
-| contextmenu     | row, $event| When row is right-clicked     |
+| name            | parameters  | description                   |
+| --------------- | ----------- | ----------------------------- |
+| changeSelection | rows        | When the selected rows change |
+| click           | row, $event | When row is clicked           |
+| contextmenu     | row, $event | When row is right-clicked     |
 
 ### Table Config
 
@@ -182,7 +196,6 @@ Here is a complex example and you can get more info in the tables below the exam
 | \_index  | Show the index of row                |
 | \_action | A slot to customize the content      |
 | \_expand | A slot to customize a popover window |
-
 
 ### Custom slot with formatted data and filter
 
