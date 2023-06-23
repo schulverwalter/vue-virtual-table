@@ -182,7 +182,7 @@
                                     v-else-if="item.filterable"
                                 >
                                     <base-popover
-                                        :width="240"
+                                        :width="300"
                                         :boundary="$refs.mainScroll"
                                     >
                                         <div style="padding: 5px">
