@@ -876,7 +876,6 @@ export default defineComponent({
             this.updateDebounceMethod();
         },
         update() {
-            // console.log("table updated!");
             this.lastConfigTemp = deepCopy(this.configTemp);
             this.updateBase();
             this.handleClickConfirmFilter();
