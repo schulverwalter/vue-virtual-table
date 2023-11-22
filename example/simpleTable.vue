@@ -17,12 +17,8 @@
                 v-on:contextmenu="handleContextmenu"
             >
                 <template slot-scope="scope" slot="actionCommon">
-                    <button size="mini" @click="edit(scope.index, scope.row)">
-                        Edit
-                    </button>
-                    <button size="mini" @click="del(scope.index, scope.row)">
-                        Delete
-                    </button>
+                    <button size="mini" @click="edit(scope.index, scope.row)">Edit</button>
+                    <button size="mini" @click="del(scope.index, scope.row)">Delete</button>
                 </template>
             </vue-virtual-table>
         </div>
@@ -123,22 +119,7 @@ export default {
             this.randomData(this.lineNum);
         },
         randomData(len) {
-            let cts = [
-                "a",
-                "b",
-                "c",
-                "d",
-                "e",
-                "f",
-                "g",
-                "h",
-                "i",
-                "j",
-                "k",
-                "l",
-                "m",
-                "n",
-            ];
+            let cts = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"];
             let all_data = [];
             for (let i = 0; i < len; i++) {
                 let user = "u" + _uuid(6, 10),

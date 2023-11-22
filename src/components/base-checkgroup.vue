@@ -14,13 +14,7 @@
                     height="14"
                     v-if="checkedGroup.includes(checkItem)"
                 ></base-icon>
-                <base-icon
-                    icon-name="boxEmpty"
-                    icon-color="#dcdfe6"
-                    width="14"
-                    height="14"
-                    v-else
-                ></base-icon>
+                <base-icon icon-name="boxEmpty" icon-color="#dcdfe6" width="14" height="14" v-else></base-icon>
             </div>
             <div class="check-label">{{ checkItem }}</div>
         </div>

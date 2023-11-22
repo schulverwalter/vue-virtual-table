@@ -1,10 +1,5 @@
 <template>
-    <BasePopover
-        :clickToClose="true"
-        @showChange="handlePopoverChange"
-        :width="width"
-        animation-mode="slidedown"
-    >
+    <BasePopover :clickToClose="true" @showChange="handlePopoverChange" :width="width" animation-mode="slidedown">
         <div class="option-list">
             <div
                 v-for="option in choiceList"
@@ -15,11 +10,7 @@
                 {{ option.label }}
             </div>
         </div>
-        <div
-            slot="reference"
-            class="select-box"
-            :style="{ width: width + 'px' }"
-        >
+        <div slot="reference" class="select-box" :style="{ width: width + 'px' }">
             {{ selected.label }}
             <div class="arrow-side">
                 <base-icon

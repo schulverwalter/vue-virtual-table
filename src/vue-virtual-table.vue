@@ -5,15 +5,7 @@
             :style="{ 'min-width': minWidthTemp + 'px', position: 'relative' }"
             :class="{ bordered: bordered }"
         >
-            <div
-                style="
-                    text-align: right;
-                    position: absolute;
-                    right: 5px;
-                    top: 5px;
-                "
-                v-if="enableExport"
-            >
+            <div style="text-align: right; position: absolute; right: 5px; top: 5px" v-if="enableExport">
                 <base-icon
                     icon-name="cloudDownloadAlt"
                     icon-color="#bbbbbb"
@@ -29,70 +21,31 @@
                         <div class="header-line">
                             <div
                                 class="header-cell"
-                                v-for="(item, configIndex) in configTemp.filter(
-                                    (v) => !v.isHidden
-                                )"
+                                v-for="(item, configIndex) in configTemp.filter((v) => !v.isHidden)"
                                 :key="configIndex"
                                 :style="{ flex: colWidth[configIndex] }"
                             >
-                                <div
-                                    class="header-cell-inner search-wrapper"
-                                    v-if="item.searchable"
-                                >
-                                    <base-popover
-                                        :width="340"
-                                        :boundary="$refs.mainScroll"
-                                    >
-                                        <div
-                                            style="
-                                                padding: 10px;
-                                                text-align: left;
-                                                font-size: 0;
-                                            "
-                                        >
-                                            <template
-                                                v-for="(
-                                                    phrase, ph_index
-                                                ) in item.searchPhrase"
-                                            >
+                                <div class="header-cell-inner search-wrapper" v-if="item.searchable">
+                                    <base-popover :width="340" :boundary="$refs.mainScroll">
+                                        <div style="padding: 10px; text-align: left; font-size: 0">
+                                            <template v-for="(phrase, ph_index) in item.searchPhrase">
                                                 <base-select
                                                     :key="'s_' + ph_index"
                                                     v-model="phrase.operator"
-                                                    @change="
-                                                        handleClickConfirmFilter(
-                                                            configIndex
-                                                        )
-                                                    "
+                                                    @change="handleClickConfirmFilter(configIndex)"
                                                     :choice-list="
-                                                        allPhraseOperator.map(
-                                                            (v) => ({
-                                                                value: v.value,
-                                                                label: languageOptions[
-                                                                    language
-                                                                ].phraseFilter[
-                                                                    v.value
-                                                                ],
-                                                            })
-                                                        )
+                                                        allPhraseOperator.map((v) => ({
+                                                            value: v.value,
+                                                            label: languageOptions[language].phraseFilter[v.value],
+                                                        }))
                                                     "
                                                 ></base-select>
                                                 <base-input
                                                     :key="'in_' + ph_index"
                                                     v-model="phrase.value"
-                                                    @change="
-                                                        handleClickConfirmFilter(
-                                                            configIndex
-                                                        )
-                                                    "
-                                                    style="
-                                                        margin: 0 5px 6px 5px;
-                                                        width: 210px;
-                                                    "
-                                                    :placeholder="
-                                                        languageOptions[
-                                                            language
-                                                        ].phraseFilter['ph']
-                                                    "
+                                                    @change="handleClickConfirmFilter(configIndex)"
+                                                    style="margin: 0 5px 6px 5px; width: 210px"
+                                                    :placeholder="languageOptions[language].phraseFilter['ph']"
                                                     auto-focus
                                                 ></base-input>
                                                 <base-icon
@@ -103,51 +56,26 @@
                                                     width="13"
                                                     height="13"
                                                     v-show="ph_index > 0"
-                                                    @click.native="
-                                                        removePhraseFilter(
-                                                            configIndex,
-                                                            ph_index
-                                                        )
-                                                    "
+                                                    @click.native="removePhraseFilter(configIndex, ph_index)"
                                                 ></base-icon>
                                             </template>
                                             <div style="display: flex">
                                                 <base-button
                                                     class="btn filterBtnEmpty"
                                                     type="primary"
-                                                    @click.native="
-                                                        addFilterPhrase(
-                                                            configIndex
-                                                        )
-                                                    "
-                                                    :disabled="
-                                                        item.searchPhrase
-                                                            .length >=
-                                                        phraseLimit
-                                                    "
+                                                    @click.native="addFilterPhrase(configIndex)"
+                                                    :disabled="item.searchPhrase.length >= phraseLimit"
                                                     >{{
-                                                        languageOptions[
-                                                            language
-                                                        ].phraseFilter[
-                                                            "and_btn"
-                                                        ]
+                                                        languageOptions[language].phraseFilter["and_btn"]
                                                     }}</base-button
                                                 >
                                                 <base-button
                                                     class="btn filterBtnEmpty"
                                                     style="margin-left: 5px"
                                                     type="danger"
-                                                    @click.native="
-                                                        handleClickEmptyPhraseFilter(
-                                                            configIndex
-                                                        )
-                                                    "
+                                                    @click.native="handleClickEmptyPhraseFilter(configIndex)"
                                                     >{{
-                                                        languageOptions[
-                                                            language
-                                                        ].phraseFilter[
-                                                            "clear_btn"
-                                                        ]
+                                                        languageOptions[language].phraseFilter["clear_btn"]
                                                     }}</base-button
                                                 >
                                             </div>
@@ -158,9 +86,7 @@
                                                 v-if="item.name"
                                                 :class="{
                                                     searched:
-                                                        item.searchPhrase.findIndex(
-                                                            (v) => v.value != ''
-                                                        ) > -1,
+                                                        item.searchPhrase.findIndex((v) => v.value != '') > -1,
                                                 }"
                                                 >{{ item.name }}</span
                                             >
@@ -168,80 +94,44 @@
                                                 v-else
                                                 :class="{
                                                     searched:
-                                                        item.searchPhrase.findIndex(
-                                                            (v) => v.value != ''
-                                                        ) > -1,
+                                                        item.searchPhrase.findIndex((v) => v.value != '') > -1,
                                                 }"
                                                 >{{ item.prop }}</span
                                             >
                                         </span>
                                     </base-popover>
                                 </div>
-                                <div
-                                    class="header-cell-inner filter-wrapper"
-                                    v-else-if="item.filterable"
-                                >
-                                    <base-popover
-                                        :width="300"
-                                        :boundary="$refs.mainScroll"
-                                    >
+                                <div class="header-cell-inner filter-wrapper" v-else-if="item.filterable">
+                                    <base-popover :width="300" :boundary="$refs.mainScroll">
                                         <div style="padding: 5px">
                                             <base-checkgroup
-                                                v-model="
-                                                    item.filterSelectedOptions
-                                                "
+                                                v-model="item.filterSelectedOptions"
                                                 @change="handleChangeFilter"
-                                                :choice-list="
-                                                    item.filterOptions
-                                                "
+                                                :choice-list="item.filterOptions"
                                                 class="filter-list"
                                             ></base-checkgroup>
                                             <div class="filter-btn">
                                                 <base-button
                                                     type="primary"
-                                                    @click.native="
-                                                        handleClickConfirmFilter(
-                                                            configIndex
-                                                        )
-                                                    "
+                                                    @click.native="handleClickConfirmFilter(configIndex)"
                                                     >{{
-                                                        languageOptions[
-                                                            language
-                                                        ].selectFilter[
-                                                            "confirm_btn"
-                                                        ]
+                                                        languageOptions[language].selectFilter["confirm_btn"]
                                                     }}</base-button
                                                 >
                                                 <base-button
                                                     type="primary"
                                                     style="margin-left: 5px"
-                                                    @click.native="
-                                                        handleClickReverseFilter(
-                                                            configIndex
-                                                        )
-                                                    "
+                                                    @click.native="handleClickReverseFilter(configIndex)"
                                                     >{{
-                                                        languageOptions[
-                                                            language
-                                                        ].selectFilter[
-                                                            "reverse_btn"
-                                                        ]
+                                                        languageOptions[language].selectFilter["reverse_btn"]
                                                     }}</base-button
                                                 >
                                                 <base-button
                                                     type="danger"
                                                     style="margin-left: 5px"
-                                                    @click.native="
-                                                        handleClickClearFilter(
-                                                            configIndex
-                                                        )
-                                                    "
+                                                    @click.native="handleClickClearFilter(configIndex)"
                                                     >{{
-                                                        languageOptions[
-                                                            language
-                                                        ].selectFilter[
-                                                            "clear_btn"
-                                                        ]
+                                                        languageOptions[language].selectFilter["clear_btn"]
                                                     }}</base-button
                                                 >
                                             </div>
@@ -252,9 +142,7 @@
                                                 :class="{
                                                     filtered:
                                                         item.filterSelectedOptions &&
-                                                        item
-                                                            .filterSelectedOptions
-                                                            .length,
+                                                        item.filterSelectedOptions.length,
                                                 }"
                                                 >{{ item.name }}</span
                                             >
@@ -263,13 +151,9 @@
                                                 :class="{
                                                     filtered:
                                                         item.filterSelectedOptions &&
-                                                        item
-                                                            .filterSelectedOptions
-                                                            .length,
+                                                        item.filterSelectedOptions.length,
                                                 }"
-                                                >{{
-                                                    item.key || item.prop
-                                                }}</span
+                                                >{{ item.key || item.prop }}</span
                                             >
                                             <base-icon
                                                 icon-name="arrowCarrotDown"
@@ -280,114 +164,50 @@
                                         </span>
                                     </base-popover>
                                 </div>
-                                <div
-                                    class="header-cell-inner numFiltered-wrapper"
-                                    v-else-if="item.numberFilter"
-                                >
+                                <div class="header-cell-inner numFiltered-wrapper" v-else-if="item.numberFilter">
                                     <base-popover
-                                        :width="
-                                            item.numberFilterPhrase.operator ===
-                                            'bt'
-                                                ? 298
-                                                : 198
-                                        "
+                                        :width="item.numberFilterPhrase.operator === 'bt' ? 298 : 198"
                                         :boundary="$refs.mainScroll"
                                     >
-                                        <div
-                                            style="
-                                                padding: 10px;
-                                                text-align: left;
-                                                font-size: 0;
-                                            "
-                                        >
+                                        <div style="padding: 10px; text-align: left; font-size: 0">
                                             <base-select
-                                                v-model="
-                                                    item.numberFilterPhrase
-                                                        .operator
-                                                "
+                                                v-model="item.numberFilterPhrase.operator"
                                                 :choice-list="
-                                                    allOperatorType.map(
-                                                        (v) => ({
-                                                            value: v.value,
-                                                            label: languageOptions[
-                                                                language
-                                                            ].numberFilter[
-                                                                v.value
-                                                            ],
-                                                        })
-                                                    )
+                                                    allOperatorType.map((v) => ({
+                                                        value: v.value,
+                                                        label: languageOptions[language].numberFilter[v.value],
+                                                    }))
                                                 "
                                                 placeholder
-                                                @change="
-                                                    handleClickConfirmFilter(
-                                                        configIndex
-                                                    )
-                                                "
+                                                @change="handleClickConfirmFilter(configIndex)"
                                             ></base-select>
                                             <base-input
-                                                style="
-                                                    width: 90px;
-                                                    margin-left: 5px;
-                                                "
+                                                style="width: 90px; margin-left: 5px"
                                                 type="number"
-                                                v-model="
-                                                    item.numberFilterPhrase
-                                                        .value[0]
-                                                "
-                                                @change="
-                                                    handleClickConfirmFilter(
-                                                        configIndex
-                                                    )
-                                                "
+                                                v-model="item.numberFilterPhrase.value[0]"
+                                                @change="handleClickConfirmFilter(configIndex)"
                                                 auto-focus
                                             ></base-input>
                                             <div
-                                                style="
-                                                    display: inline-block;
-                                                    font-size: 13px;
-                                                "
-                                                v-show="
-                                                    item.numberFilterPhrase
-                                                        .operator === 'bt'
-                                                "
+                                                style="display: inline-block; font-size: 13px"
+                                                v-show="item.numberFilterPhrase.operator === 'bt'"
                                             >
                                                 ~
                                             </div>
                                             <base-input
-                                                style="
-                                                    width: 90px;
-                                                    margin-left: 1px;
-                                                "
+                                                style="width: 90px; margin-left: 1px"
                                                 type="number"
-                                                v-model="
-                                                    item.numberFilterPhrase
-                                                        .value[1]
-                                                "
-                                                v-show="
-                                                    item.numberFilterPhrase
-                                                        .operator === 'bt'
-                                                "
-                                                @change="
-                                                    handleClickConfirmFilter(
-                                                        configIndex
-                                                    )
-                                                "
+                                                v-model="item.numberFilterPhrase.value[1]"
+                                                v-show="item.numberFilterPhrase.operator === 'bt'"
+                                                @change="handleClickConfirmFilter(configIndex)"
                                             ></base-input>
                                             <div style="text-align: right">
                                                 <base-button
                                                     style="margin-top: 10px"
                                                     type="danger"
-                                                    @click.native="
-                                                        handleClickEmptyNumberFilter(
-                                                            configIndex
-                                                        )
-                                                    "
+                                                    @click.native="handleClickEmptyNumberFilter(configIndex)"
                                                     >{{
-                                                        languageOptions[
-                                                            language
-                                                        ].numberFilter[
-                                                            "clear_btn"
-                                                        ]
+                                                        languageOptions[language].numberFilter["clear_btn"]
                                                     }}</base-button
                                                 >
                                             </div>
@@ -396,18 +216,14 @@
                                             <span
                                                 v-if="item.name"
                                                 :class="{
-                                                    numFiltered:
-                                                        item.numberFilterPhrase
-                                                            .value[0] !== '',
+                                                    numFiltered: item.numberFilterPhrase.value[0] !== '',
                                                 }"
                                                 >{{ item.name }}</span
                                             >
                                             <span
                                                 v-else
                                                 :class="{
-                                                    numFiltered:
-                                                        item.numberFilterPhrase
-                                                            .value[0] !== '',
+                                                    numFiltered: item.numberFilterPhrase.value[0] !== '',
                                                 }"
                                                 >{{ item.prop }}</span
                                             >
@@ -419,9 +235,7 @@
                                         v-if="item.name"
                                         :class="{
                                             filtered:
-                                                item.filterSelectedOptions &&
-                                                item.filterSelectedOptions
-                                                    .length,
+                                                item.filterSelectedOptions && item.filterSelectedOptions.length,
                                         }"
                                         >{{ item.name }}</span
                                     >
@@ -429,9 +243,7 @@
                                         v-else
                                         :class="{
                                             filtered:
-                                                item.filterSelectedOptions &&
-                                                item.filterSelectedOptions
-                                                    .length,
+                                                item.filterSelectedOptions && item.filterSelectedOptions.length,
                                         }"
                                         >{{ item.key || item.prop }}</span
                                     >
@@ -443,37 +255,22 @@
                                 >
                                     {{ languageOptions[language].selectAll }}
                                 </div>
-                                <div
-                                    class="header-cell-inner caret-wrapper"
-                                    v-if="item.sortable"
-                                >
+                                <div class="header-cell-inner caret-wrapper" v-if="item.sortable">
                                     <i
                                         class="sort-ascending"
-                                        @click="
-                                            handleClickSort(
-                                                item.key || item.prop,
-                                                'asc'
-                                            )
-                                        "
+                                        @click="handleClickSort(item.key || item.prop, 'asc')"
                                         :class="{
                                             selected:
-                                                sortParam.col ===
-                                                    (item.key || item.prop) &&
+                                                sortParam.col === (item.key || item.prop) &&
                                                 sortParam.direction === 'asc',
                                         }"
                                     ></i>
                                     <i
                                         class="sort-descending"
-                                        @click="
-                                            handleClickSort(
-                                                item.key || item.prop,
-                                                'desc'
-                                            )
-                                        "
+                                        @click="handleClickSort(item.key || item.prop, 'desc')"
                                         :class="{
                                             selected:
-                                                sortParam.col ===
-                                                    (item.key || item.prop) &&
+                                                sortParam.col === (item.key || item.prop) &&
                                                 sortParam.direction === 'desc',
                                         }"
                                     ></i>
@@ -481,15 +278,8 @@
                             </div>
                         </div>
                     </template>
-                    <template
-                        v-if="enableMultiHeader"
-                        class="multi-header-contain"
-                    >
-                        <div
-                            class="header-line"
-                            v-for="(hItem, hIndex) in multiConfigTemp"
-                            :key="hIndex"
-                        >
+                    <template v-if="enableMultiHeader" class="multi-header-contain">
+                        <div class="header-line" v-for="(hItem, hIndex) in multiConfigTemp" :key="hIndex">
                             <div
                                 class="header-cell"
                                 v-for="(hdSet, hdName) in hItem"
@@ -516,9 +306,7 @@
                         <div
                             class="item-line"
                             @click="handleClickItem(props.item, $event)"
-                            @contextmenu="
-                                $emit('contextmenu', props.item, $event)
-                            "
+                            @contextmenu="$emit('contextmenu', props.item, $event)"
                             :class="{
                                 selected: props.item._eSelected,
                                 unselectable: !selectable,
@@ -528,9 +316,7 @@
                         >
                             <div
                                 class="item-cell"
-                                v-for="(item, configIndex) in configTemp.filter(
-                                    (v) => !v.isHidden
-                                )"
+                                v-for="(item, configIndex) in configTemp.filter((v) => !v.isHidden)"
                                 :style="{ flex: colWidth[configIndex] }"
                                 :class="props.item._eClass[item.prop] || ''"
                                 :key="configIndex"
@@ -540,10 +326,8 @@
                                         class="item-cell-inner rowSlot"
                                         :style="{
                                             height: itemHeight - 12 + 'px',
-                                            'align-items':
-                                                item.alignItems || 'center',
-                                            'justify-content':
-                                                item.justifyContent || 'center',
+                                            'align-items': item.alignItems || 'center',
+                                            'justify-content': item.justifyContent || 'center',
                                         }"
                                         @click="handleClickAction"
                                     >
@@ -556,14 +340,8 @@
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <div
-                                        class="item-cell-inner"
-                                        v-if="item.prop === '_expand'"
-                                    >
-                                        <base-popover
-                                            :width="mainWidth - 54"
-                                            :boundary="$refs.mainScroll"
-                                        >
+                                    <div class="item-cell-inner" v-if="item.prop === '_expand'">
+                                        <base-popover :width="mainWidth - 54" :boundary="$refs.mainScroll">
                                             <div>
                                                 <slot
                                                     :index="props.itemIndex"
@@ -579,9 +357,7 @@
                                                 height="16"
                                                 slot="reference"
                                                 style="cursor: pointer"
-                                                @click.native="
-                                                    handleClickExpand
-                                                "
+                                                @click.native="handleClickExpand"
                                             ></base-icon>
                                         </base-popover>
                                     </div>
@@ -589,166 +365,72 @@
                                         class="item-cell-inner"
                                         v-else-if="item.eTip"
                                         :style="{
-                                            'align-items':
-                                                item.alignItems || 'center',
-                                            'justify-content':
-                                                item.justifyContent || 'center',
+                                            'align-items': item.alignItems || 'center',
+                                            'justify-content': item.justifyContent || 'center',
                                         }"
                                     >
-                                        <VTooltip
-                                            trigger="hover"
-                                            placement="right"
-                                        >
+                                        <VTooltip trigger="hover" placement="right">
                                             <span>
                                                 <span
-                                                    v-if="
-                                                        item.prefix &&
-                                                        getDescendantProp(
-                                                            props.item,
-                                                            item.prop
-                                                        )
-                                                    "
-                                                    :class="
-                                                        props.item._eClass[
-                                                            item.prop
-                                                        ] || ''
-                                                    "
+                                                    v-if="item.prefix && getDescendantProp(props.item, item.prop)"
+                                                    :class="props.item._eClass[item.prop] || ''"
                                                     class="prefix"
                                                     >{{ item.prefix }}</span
                                                 >
-                                                <span
-                                                    v-if="
-                                                        item.prop === '_index'
-                                                    "
-                                                    >{{
-                                                        props.itemIndex + 1
-                                                    }}</span
-                                                >
+                                                <span v-if="item.prop === '_index'">{{ props.itemIndex + 1 }}</span>
                                                 <span
                                                     v-else-if="item.filterable"
                                                     class="tag"
                                                     :class="
-                                                        item.filterTag[
-                                                            getDescendantProp(
-                                                                props.item,
-                                                                item.prop
-                                                            )
-                                                        ] || 'defaultTag'
+                                                        item.filterTag[getDescendantProp(props.item, item.prop)] ||
+                                                        'defaultTag'
                                                     "
-                                                    >{{
-                                                        getDescendantProp(
-                                                            props.item,
-                                                            item.prop
-                                                        )
-                                                    }}</span
+                                                    >{{ getDescendantProp(props.item, item.prop) }}</span
                                                 >
                                                 <span
                                                     v-else-if="item.eClass"
-                                                    :class="
-                                                        props.item._eClass[
-                                                            item.prop
-                                                        ]
-                                                    "
-                                                    >{{
-                                                        getDescendantProp(
-                                                            props.item,
-                                                            item.prop
-                                                        )
-                                                    }}</span
+                                                    :class="props.item._eClass[item.prop]"
+                                                    >{{ getDescendantProp(props.item, item.prop) }}</span
                                                 >
-                                                <span v-else>{{
-                                                    getDescendantProp(
-                                                        props.item,
-                                                        item.prop
-                                                    )
-                                                }}</span>
+                                                <span v-else>{{ getDescendantProp(props.item, item.prop) }}</span>
                                                 <span
-                                                    v-if="
-                                                        item.suffix &&
-                                                        getDescendantProp(
-                                                            props.item,
-                                                            item.prop
-                                                        )
-                                                    "
-                                                    :class="
-                                                        props.item._eClass[
-                                                            item.prop
-                                                        ] || ''
-                                                    "
+                                                    v-if="item.suffix && getDescendantProp(props.item, item.prop)"
+                                                    :class="props.item._eClass[item.prop] || ''"
                                                     class="suffix"
                                                     >{{ item.suffix }}</span
                                                 >
                                             </span>
                                             <template #popover>
-                                                <div
-                                                    style="
-                                                        text-align: left;
-                                                        font-size: 13px;
-                                                    "
-                                                    class="pop-card"
-                                                >
-                                                    <span
-                                                        v-for="tipProp in item.eTip"
-                                                        :key="tipProp"
-                                                    >
-                                                        <span
-                                                            v-if="
-                                                                item.eTipWithProp
-                                                            "
+                                                <div style="text-align: left; font-size: 13px" class="pop-card">
+                                                    <span v-for="tipProp in item.eTip" :key="tipProp">
+                                                        <span v-if="item.eTipWithProp"
                                                             >{{
-                                                                configTemp.filter(
-                                                                    (v) =>
-                                                                        v.prop ===
-                                                                        tipProp
-                                                                )[0].name
+                                                                configTemp.filter((v) => v.prop === tipProp)[0]
+                                                                    .name
                                                             }}:</span
                                                         >
                                                         <span>
                                                             <span
                                                                 v-if="
-                                                                    configTemp.filter(
-                                                                        (v) =>
-                                                                            v.prop ===
-                                                                            tipProp
-                                                                    )[0]
-                                                                        .prefix &&
-                                                                    props.item[
-                                                                        tipProp
-                                                                    ]
+                                                                    configTemp.filter((v) => v.prop === tipProp)[0]
+                                                                        .prefix && props.item[tipProp]
                                                                 "
                                                                 class="prefix"
                                                                 >{{
-                                                                    configTemp.filter(
-                                                                        (v) =>
-                                                                            v.prop ===
-                                                                            tipProp
-                                                                    )[0].prefix
+                                                                    configTemp.filter((v) => v.prop === tipProp)[0]
+                                                                        .prefix
                                                                 }}</span
                                                             >
-                                                            <span>{{
-                                                                props.item[
-                                                                    tipProp
-                                                                ]
-                                                            }}</span>
+                                                            <span>{{ props.item[tipProp] }}</span>
                                                             <span
                                                                 v-if="
-                                                                    configTemp.filter(
-                                                                        (v) =>
-                                                                            v.prop ===
-                                                                            tipProp
-                                                                    )[0]
-                                                                        .suffix &&
-                                                                    props.item[
-                                                                        tipProp
-                                                                    ]
+                                                                    configTemp.filter((v) => v.prop === tipProp)[0]
+                                                                        .suffix && props.item[tipProp]
                                                                 "
                                                                 class="suffix"
                                                                 >{{
-                                                                    configTemp.filter(
-                                                                        (v) =>
-                                                                            v.prop ===
-                                                                            tipProp
-                                                                    )[0].suffix
+                                                                    configTemp.filter((v) => v.prop === tipProp)[0]
+                                                                        .suffix
                                                                 }}</span
                                                             >
                                                             <br />
@@ -760,12 +442,7 @@
                                                         width="13"
                                                         height="13"
                                                         style="cursor: pointer"
-                                                        @click.native="
-                                                            handleClickCopy(
-                                                                props.item,
-                                                                item.eTip
-                                                            )
-                                                        "
+                                                        @click.native="handleClickCopy(props.item, item.eTip)"
                                                     ></base-icon>
                                                 </div>
                                             </template>
@@ -775,78 +452,33 @@
                                         class="item-cell-inner"
                                         v-else
                                         :style="{
-                                            'align-items':
-                                                item.alignItems || 'center',
-                                            'justify-content':
-                                                item.justifyContent || 'center',
+                                            'align-items': item.alignItems || 'center',
+                                            'justify-content': item.justifyContent || 'center',
                                         }"
                                     >
                                         <span
-                                            v-if="
-                                                item.prefix &&
-                                                getDescendantProp(
-                                                    props.item,
-                                                    item.prop
-                                                )
-                                            "
-                                            :class="
-                                                props.item._eClass[item.prop] ||
-                                                ''
-                                            "
+                                            v-if="item.prefix && getDescendantProp(props.item, item.prop)"
+                                            :class="props.item._eClass[item.prop] || ''"
                                             class="prefix"
                                             >{{ item.prefix }}</span
                                         >
-                                        <span v-if="item.prop === '_index'">{{
-                                            props.itemIndex + 1
-                                        }}</span>
+                                        <span v-if="item.prop === '_index'">{{ props.itemIndex + 1 }}</span>
                                         <span
                                             v-else-if="item.filterable"
                                             class="tag"
                                             :class="
-                                                item.filterTag[
-                                                    getDescendantProp(
-                                                        props.item,
-                                                        item.prop
-                                                    )
-                                                ] || 'defaultTag'
+                                                item.filterTag[getDescendantProp(props.item, item.prop)] ||
+                                                'defaultTag'
                                             "
-                                            >{{
-                                                getDescendantProp(
-                                                    props.item,
-                                                    item.prop
-                                                )
-                                            }}</span
+                                            >{{ getDescendantProp(props.item, item.prop) }}</span
                                         >
-                                        <span
-                                            v-else-if="item.eClass"
-                                            :class="
-                                                props.item._eClass[item.prop]
-                                            "
-                                            >{{
-                                                getDescendantProp(
-                                                    props.item,
-                                                    item.prop
-                                                )
-                                            }}</span
-                                        >
-                                        <span v-else>{{
-                                            getDescendantProp(
-                                                props.item,
-                                                item.prop
-                                            )
+                                        <span v-else-if="item.eClass" :class="props.item._eClass[item.prop]">{{
+                                            getDescendantProp(props.item, item.prop)
                                         }}</span>
+                                        <span v-else>{{ getDescendantProp(props.item, item.prop) }}</span>
                                         <span
-                                            v-if="
-                                                item.suffix &&
-                                                getDescendantProp(
-                                                    props.item,
-                                                    item.prop
-                                                )
-                                            "
-                                            :class="
-                                                props.item._eClass[item.prop] ||
-                                                ''
-                                            "
+                                            v-if="item.suffix && getDescendantProp(props.item, item.prop)"
+                                            :class="props.item._eClass[item.prop] || ''"
                                             class="suffix"
                                             >{{ item.suffix }}</span
                                         >
@@ -862,22 +494,12 @@
                     <div class="bottom-line">
                         <div
                             class="bottom-cell"
-                            v-for="(item, configIndex) in configTemp.filter(
-                                (v) => !v.isHidden
-                            )"
+                            v-for="(item, configIndex) in configTemp.filter((v) => !v.isHidden)"
                             :key="configIndex"
                             :style="{ flex: colWidth[configIndex] }"
                         >
-                            <span
-                                v-if="
-                                    item.prop === '_expand' &&
-                                    item.expandSummary
-                                "
-                            >
-                                <base-popover
-                                    :width="mainWidth - 54"
-                                    :boundary="$refs.mainScroll"
-                                >
+                            <span v-if="item.prop === '_expand' && item.expandSummary">
+                                <base-popover :width="mainWidth - 54" :boundary="$refs.mainScroll">
                                     <slot :data="dataTemp" name="summary" />
                                     <base-icon
                                         icon-name="arrowCarrotRight"
@@ -892,9 +514,7 @@
                             </span>
                             <span v-if="item.prefix">{{ item.prefix }}</span>
                             <span v-if="item.summary">{{
-                                summaryData.filter(
-                                    (v) => v.prop === item.prop
-                                )[0].value
+                                summaryData.filter((v) => v.prop === item.prop)[0].value
                             }}</span>
                             <span v-if="item.suffix">{{ item.suffix }}</span>
                         </div>
@@ -909,6 +529,7 @@
     </div>
 </template>
 <script>
+import { defineComponent } from "vue";
 import VirtualScroller from "./components/virtual-scroller.vue";
 import { ObserveVisibility } from "vue-observe-visibility";
 import { ResizeObserver } from "vue-resize";
@@ -923,7 +544,7 @@ import "vue-resize/dist/vue-resize.css";
 import { _uuid, exportCsv, deepCopy, debounce } from "./utils/index.js";
 import { VTooltip } from "floating-vue";
 
-export default {
+export default defineComponent({
     name: "VueVirtualTable",
     directives: {
         ObserveVisibility,
@@ -1250,10 +871,7 @@ export default {
         },
         updateDebounce() {
             if (!this.updateDebounceMethod) {
-                this.updateDebounceMethod = debounce(
-                    this.update.bind(this),
-                    100
-                );
+                this.updateDebounceMethod = debounce(this.update.bind(this), 100);
             }
             this.updateDebounceMethod();
         },
@@ -1318,10 +936,7 @@ export default {
         parseConfig() {
             let self = this;
             self.configTemp.forEach((v, i) => {
-                let last_item =
-                    self.lastConfigTemp.filter(
-                        (item) => item.prop === v.prop
-                    )[0] || {};
+                let last_item = self.lastConfigTemp.filter((item) => item.prop === v.prop)[0] || {};
                 if (self.refreshConfig) {
                     last_item = {};
                 }
@@ -1338,18 +953,12 @@ export default {
                         }
                         return prev;
                     }, []);
-                    let filterOptions = [...new Set(options)].sort((a, b) =>
-                        a.localeCompare(b)
-                    );
+                    let filterOptions = [...new Set(options)].sort((a, b) => a.localeCompare(b));
                     self.$set(v, "filterOptions", filterOptions);
-                    let selecetedOptions =
-                        last_item["filterSelectedOptions"] || [];
+                    let selecetedOptions = last_item["filterSelectedOptions"] || [];
                     let l = selecetedOptions.length;
                     for (let index = l - 1; index >= 0; index--) {
-                        if (
-                            filterOptions.indexOf(selecetedOptions[index]) ===
-                            -1
-                        ) {
+                        if (filterOptions.indexOf(selecetedOptions[index]) === -1) {
                             selecetedOptions.splice(index, 1);
                         }
                     }
@@ -1357,9 +966,7 @@ export default {
                     self.$set(v, "filterVisible", false);
                 }
                 if (v.searchable) {
-                    let searchPhrase = last_item["searchPhrase"] || [
-                        { operator: "in", value: "" },
-                    ];
+                    let searchPhrase = last_item["searchPhrase"] || [{ operator: "in", value: "" }];
                     self.$set(v, "searchPhrase", searchPhrase);
                     self.$set(v, "searchVisible", false);
                 }
@@ -1426,19 +1033,14 @@ export default {
                         summary.push(summary_item);
                         break;
                     case "SUM":
-                        summary_item.value = self.dataTemp.reduce(
-                            (prev, curr) => {
-                                if (!isNaN(curr[prop])) {
-                                    let this_num = Number(curr[prop]);
-                                    prev += this_num;
-                                }
-                                return prev;
-                            },
-                            0
-                        );
-                        summary_item.value = Number(
-                            summary_item.value.toFixed(2)
-                        );
+                        summary_item.value = self.dataTemp.reduce((prev, curr) => {
+                            if (!isNaN(curr[prop])) {
+                                let this_num = Number(curr[prop]);
+                                prev += this_num;
+                            }
+                            return prev;
+                        }, 0);
+                        summary_item.value = Number(summary_item.value.toFixed(2));
                         summary.push(summary_item);
                         break;
                 }
@@ -1455,11 +1057,7 @@ export default {
                     let props = text.match(/\${[\w-_]+}/g);
                     props.forEach((v1, i1) => {
                         let this_prop = v1.replace(/\${([\w-_]+)}/, "$1");
-                        text = text.replace(
-                            v1,
-                            summary.filter((val) => val.prop === this_prop)[0]
-                                .value || 0
-                        );
+                        text = text.replace(v1, summary.filter((val) => val.prop === this_prop)[0].value || 0);
                     });
                     summary_item.value = this.evalFunc(text);
                     summary_item.value = Number(summary_item.value.toFixed(2));
@@ -1471,10 +1069,7 @@ export default {
         },
         selectAll() {
             let r = true;
-            if (
-                this.dataTemp.length ===
-                this.dataTemp.filter((item) => item._eSelected === true).length
-            ) {
+            if (this.dataTemp.length === this.dataTemp.filter((item) => item._eSelected === true).length) {
                 r = false;
             }
             let eIds = [];
@@ -1498,11 +1093,8 @@ export default {
         handleClickItem(item, event) {
             let self = this;
             item._eSelected = !item._eSelected && this.selectable;
-            self.dataInitTemp.filter(
-                (v, i) => v._eId === item._eId
-            )[0]._eSelected = item._eSelected;
-            self.dataTemp.filter((v, i) => v._eId === item._eId)[0]._eSelected =
-                item._eSelected;
+            self.dataInitTemp.filter((v, i) => v._eId === item._eId)[0]._eSelected = item._eSelected;
+            self.dataTemp.filter((v, i) => v._eId === item._eId)[0]._eSelected = item._eSelected;
             self.dataTemp.splice(0, 0);
             self.dataInitTemp.splice(0, 0);
             self.$emit(
@@ -1520,44 +1112,26 @@ export default {
                 let prop = v.key || v.prop;
                 if (v.filterSelectedOptions && v.filterSelectedOptions.length) {
                     temp = temp.filter(
-                        (item) =>
-                            v.filterSelectedOptions.indexOf(
-                                self.getDescendantProp(item, prop)
-                            ) > -1
+                        (item) => v.filterSelectedOptions.indexOf(self.getDescendantProp(item, prop)) > -1
                     );
                 }
-                if (
-                    v.searchPhrase &&
-                    v.searchPhrase.findIndex((v) => v.value != "") > -1
-                ) {
+                if (v.searchPhrase && v.searchPhrase.findIndex((v) => v.value != "") > -1) {
                     v.searchPhrase
                         .filter((v) => v.value != "")
                         .forEach((fp) => {
                             if (fp.operator == "out") {
                                 temp = temp.filter(
                                     (item) =>
-                                        (
-                                            self.getDescendantProp(
-                                                item,
-                                                prop
-                                            ) || ""
-                                        )
+                                        (self.getDescendantProp(item, prop) || "")
                                             .toLowerCase()
-                                            .indexOf(fp.value.toLowerCase()) ===
-                                        -1
+                                            .indexOf(fp.value.toLowerCase()) === -1
                                 );
                             } else {
                                 temp = temp.filter(
                                     (item) =>
-                                        (
-                                            self.getDescendantProp(
-                                                item,
-                                                prop
-                                            ) || ""
-                                        )
+                                        (self.getDescendantProp(item, prop) || "")
                                             .toLowerCase()
-                                            .indexOf(fp.value.toLowerCase()) >
-                                        -1
+                                            .indexOf(fp.value.toLowerCase()) > -1
                                 );
                             }
                         });
@@ -1566,24 +1140,21 @@ export default {
                     v.numberFilterPhrase &&
                     v.numberFilterPhrase.value[0] !== "" &&
                     (v.numberFilterPhrase.operator !== "bt" ||
-                        (v.numberFilterPhrase.value[1] !== "" &&
-                            v.numberFilterPhrase.operator === "bt"))
+                        (v.numberFilterPhrase.value[1] !== "" && v.numberFilterPhrase.operator === "bt"))
                 ) {
                     switch (v.numberFilterPhrase.operator) {
                         case "eq":
                             temp = temp.filter(
                                 (item) =>
-                                    Number(
-                                        self.getDescendantProp(item, prop)
-                                    ) == Number(v.numberFilterPhrase.value[0])
+                                    Number(self.getDescendantProp(item, prop)) ==
+                                    Number(v.numberFilterPhrase.value[0])
                             );
                             break;
                         case "neq":
                             temp = temp.filter(
                                 (item) =>
-                                    Number(
-                                        self.getDescendantProp(item, prop)
-                                    ) != Number(v.numberFilterPhrase.value[0])
+                                    Number(self.getDescendantProp(item, prop)) !=
+                                    Number(v.numberFilterPhrase.value[0])
                             );
                             break;
                         case "lt":
@@ -1596,9 +1167,8 @@ export default {
                         case "le":
                             temp = temp.filter(
                                 (item) =>
-                                    Number(
-                                        self.getDescendantProp(item, prop)
-                                    ) <= Number(v.numberFilterPhrase.value[0])
+                                    Number(self.getDescendantProp(item, prop)) <=
+                                    Number(v.numberFilterPhrase.value[0])
                             );
                             break;
                         case "gt":
@@ -1611,22 +1181,16 @@ export default {
                         case "ge":
                             temp = temp.filter(
                                 (item) =>
-                                    Number(
-                                        self.getDescendantProp(item, prop)
-                                    ) >= Number(v.numberFilterPhrase.value[0])
+                                    Number(self.getDescendantProp(item, prop)) >=
+                                    Number(v.numberFilterPhrase.value[0])
                             );
                             break;
                         case "bt":
                             temp = temp.filter((item) => {
-                                const descendant = self.getDescendantProp(
-                                    item,
-                                    prop
-                                );
+                                const descendant = self.getDescendantProp(item, prop);
                                 return (
-                                    Number(descendant) >
-                                        Number(v.numberFilterPhrase.value[0]) &&
-                                    Number(descendant) <=
-                                        Number(v.numberFilterPhrase.value[1])
+                                    Number(descendant) > Number(v.numberFilterPhrase.value[0]) &&
+                                    Number(descendant) <= Number(v.numberFilterPhrase.value[1])
                                 );
                             });
                             break;
@@ -1637,26 +1201,18 @@ export default {
             if (index != undefined && self.configTemp[index]) {
                 self.$set(self.configTemp[index], "filterVisible", false);
             }
-            self.handleClickSort(
-                self.sortParam.col,
-                self.sortParam.direction,
-                true
-            );
+            self.handleClickSort(self.sortParam.col, self.sortParam.direction, true);
             self.refreshSummary();
         },
         handleClickReverseFilter(index) {
             let options = this.configTemp[index].filterOptions.slice();
-            let selecetedOptions =
-                this.configTemp[index].filterSelectedOptions.slice();
-            this.configTemp[index].filterSelectedOptions = options.reduce(
-                (prev, curr) => {
-                    if (selecetedOptions.indexOf(curr) === -1) {
-                        prev.push(curr);
-                    }
-                    return prev;
-                },
-                []
-            );
+            let selecetedOptions = this.configTemp[index].filterSelectedOptions.slice();
+            this.configTemp[index].filterSelectedOptions = options.reduce((prev, curr) => {
+                if (selecetedOptions.indexOf(curr) === -1) {
+                    prev.push(curr);
+                }
+                return prev;
+            }, []);
             this.handleClickConfirmFilter(index);
         },
         handleClickClearFilter(index) {
@@ -1669,9 +1225,7 @@ export default {
             this.$set(this.configTemp[index], "numberFilterVisible", false);
         },
         addFilterPhrase(index) {
-            if (
-                this.configTemp[index].searchPhrase.length >= this.phraseLimit
-            ) {
+            if (this.configTemp[index].searchPhrase.length >= this.phraseLimit) {
                 return;
             }
             this.configTemp[index].searchPhrase.push({
@@ -1687,19 +1241,13 @@ export default {
             // this.configTemp
         },
         handleClickEmptyPhraseFilter(index) {
-            this.configTemp[index].searchPhrase = [
-                { operator: "in", value: "" },
-            ];
+            this.configTemp[index].searchPhrase = [{ operator: "in", value: "" }];
             this.handleClickConfirmFilter(index);
         },
         handleChangeFilter(val) {},
         handleClickSort(val, direction, forse) {
             let self = this;
-            if (
-                self.sortParam.col === val &&
-                self.sortParam.direction === direction &&
-                !forse
-            ) {
+            if (self.sortParam.col === val && self.sortParam.direction === direction && !forse) {
                 return;
             }
             if (!self.dataTemp[0] || !val) {
@@ -1709,16 +1257,10 @@ export default {
             self.sortParam.direction = direction;
             let isNumber = false;
             self.dataTemp.some((v, i) => {
-                if (
-                    !self.getDescendantProp(v, val) &&
-                    self.getDescendantProp(v, val) != 0
-                ) {
+                if (!self.getDescendantProp(v, val) && self.getDescendantProp(v, val) != 0) {
                     return false;
                 }
-                if (
-                    isNaN(self.getDescendantProp(v, val)) &&
-                    self.getDescendantProp(v, val) != "NaN"
-                ) {
+                if (isNaN(self.getDescendantProp(v, val)) && self.getDescendantProp(v, val) != "NaN") {
                     isNumber = false;
                     return true;
                 } else {
@@ -1730,9 +1272,7 @@ export default {
                 if (!isNumber) {
                     // let a_cp = a[val]||'', b_cp = b[val]||''
                     self.dataTemp.sort((a, b) =>
-                        (self.getDescendantProp(a, val) || "").localeCompare(
-                            self.getDescendantProp(b, val) || ""
-                        )
+                        (self.getDescendantProp(a, val) || "").localeCompare(self.getDescendantProp(b, val) || "")
                     );
                 } else {
                     self.dataTemp.sort((a, b) => {
@@ -1742,11 +1282,7 @@ export default {
                         if (isNaN(self.getDescendantProp(b, val))) {
                             return self.getDescendantProp(a, val) < 0 ? -1 : 1;
                         }
-                        return self.getDescendantProp(a, val) -
-                            self.getDescendantProp(b, val) <
-                            0
-                            ? -1
-                            : 1;
+                        return self.getDescendantProp(a, val) - self.getDescendantProp(b, val) < 0 ? -1 : 1;
                     });
                 }
             } else {
@@ -1754,9 +1290,7 @@ export default {
                     // let a_cp = a[val]||'', b_cp = b[val]||''
                     self.dataTemp.sort(
                         (a, b) =>
-                            -(
-                                self.getDescendantProp(a, val) || ""
-                            ).localeCompare(
+                            -(self.getDescendantProp(a, val) || "").localeCompare(
                                 self.getDescendantProp(b, val) || ""
                             )
                     );
@@ -1768,11 +1302,7 @@ export default {
                         if (isNaN(self.getDescendantProp(b, val))) {
                             return self.getDescendantProp(a, val) > 0 ? -1 : 1;
                         }
-                        return self.getDescendantProp(a, val) -
-                            self.getDescendantProp(b, val) >
-                            0
-                            ? -1
-                            : 1;
+                        return self.getDescendantProp(a, val) - self.getDescendantProp(b, val) > 0 ? -1 : 1;
                     });
                 }
             }
@@ -1788,32 +1318,17 @@ export default {
             if (!this.$refs || !this.$refs.tContainer) {
                 return;
             }
-            let scrollBarWidth =
-                this.$refs.scroller.$el.offsetWidth -
-                this.$refs.scroller.$el.clientWidth;
-            let mainWidth = Number(
-                this.$refs.mainTable.getBoundingClientRect().width.toFixed(1)
-            );
+            let scrollBarWidth = this.$refs.scroller.$el.offsetWidth - this.$refs.scroller.$el.clientWidth;
+            let mainWidth = Number(this.$refs.mainTable.getBoundingClientRect().width.toFixed(1));
             mainWidth = Math.max(mainWidth, this.minWidth);
-            this.mainWidth =
-                this.$refs.mainScroll.getBoundingClientRect().width;
+            this.mainWidth = this.$refs.mainScroll.getBoundingClientRect().width;
             this.$refs.tContainer.setAttribute(
                 "style",
-                "width:" +
-                    mainWidth +
-                    "px;height:" +
-                    (this.height - 50 - 50 * (this.showSummary ? 1 : 0)) +
-                    "px"
+                "width:" + mainWidth + "px;height:" + (this.height - 50 - 50 * (this.showSummary ? 1 : 0)) + "px"
             );
-            this.$refs.tHeaderTable.setAttribute(
-                "style",
-                "width:" + (mainWidth - scrollBarWidth) + "px"
-            );
+            this.$refs.tHeaderTable.setAttribute("style", "width:" + (mainWidth - scrollBarWidth) + "px");
             if (this.$refs.tBottom) {
-                this.$refs.tBottomTable.setAttribute(
-                    "style",
-                    "width:" + (mainWidth - scrollBarWidth) + "px"
-                );
+                this.$refs.tBottomTable.setAttribute("style", "width:" + (mainWidth - scrollBarWidth) + "px");
             }
             let colNumber = this.configTemp.filter((v) => !v.isHidden).length;
             let usedWidth = 0,
@@ -1827,39 +1342,22 @@ export default {
                         usedWidth += Number(v.width);
                     }
                 });
-            let averageWidth = Number(
-                ((mainWidth - usedWidth) / averageColNum).toFixed(1)
-            );
+            let averageWidth = Number(((mainWidth - usedWidth) / averageColNum).toFixed(1));
             for (let i = 0; i < colNumber; i++) {
-                if (
-                    isNaN(this.configTemp.filter((v) => !v.isHidden)[i].width)
-                ) {
-                    this.colWidth[i] = (
-                        (averageWidth * 100) /
-                        mainWidth
-                    ).toFixed(1);
+                if (isNaN(this.configTemp.filter((v) => !v.isHidden)[i].width)) {
+                    this.colWidth[i] = ((averageWidth * 100) / mainWidth).toFixed(1);
                 } else {
                     this.colWidth[i] = (
-                        (this.configTemp.filter((v) => !v.isHidden)[i].width *
-                            100) /
+                        (this.configTemp.filter((v) => !v.isHidden)[i].width * 100) /
                         mainWidth
                     ).toFixed(1);
                 }
             }
             this.colWidth.splice(0, 0);
-            if (
-                this.$refs.mainScroll.getBoundingClientRect().width <
-                this.minWidthTemp
-            ) {
-                this.$refs.mainScroll.setAttribute(
-                    "style",
-                    "overflow-x: scroll;"
-                );
+            if (this.$refs.mainScroll.getBoundingClientRect().width < this.minWidthTemp) {
+                this.$refs.mainScroll.setAttribute("style", "overflow-x: scroll;");
             } else {
-                this.$refs.mainScroll.setAttribute(
-                    "style",
-                    "overflow-x: hidden;"
-                );
+                this.$refs.mainScroll.setAttribute("style", "overflow-x: hidden;");
             }
         },
         clearObj(obj) {
@@ -1870,7 +1368,7 @@ export default {
             return obj_cp;
         },
     },
-};
+});
 </script>
 <style scoped lang="scss">
 $default-color: #3caed2;

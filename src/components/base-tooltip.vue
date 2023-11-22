@@ -12,17 +12,10 @@
                 @click="handleClick"
             >
                 <slot></slot>
-                <div
-                    class="pop-arrow"
-                    :style="{ left: offset.arrowLeft + 'px' }"
-                ></div>
+                <div class="pop-arrow" :style="{ left: offset.arrowLeft + 'px' }"></div>
             </div>
         </transition>
-        <div
-            class="pop-handler"
-            ref="popHandler"
-            v-observe-visibility="setSize"
-        >
+        <div class="pop-handler" ref="popHandler" v-observe-visibility="setSize">
             <slot name="reference"></slot>
         </div>
     </div>
@@ -90,14 +83,8 @@ export default {
             if (!this.$refs.popHandler) {
                 return;
             }
-            let { x, y, width, height } =
-                this.$refs.popHandler.getBoundingClientRect();
-            let {
-                x: bx,
-                y: by,
-                width: bwidth,
-                height: bheight,
-            } = this.boundary.getBoundingClientRect();
+            let { x, y, width, height } = this.$refs.popHandler.getBoundingClientRect();
+            let { x: bx, y: by, width: bwidth, height: bheight } = this.boundary.getBoundingClientRect();
 
             let moveLeft = 0;
             if (x + this.width > bx + bwidth) {

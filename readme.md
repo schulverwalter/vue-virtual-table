@@ -28,8 +28,7 @@ A simplest example:
 
 ```html
 <template>
-    <vue-virtual-table :config="tableConfig" :data="tableData">
-    </vue-virtual-table>
+    <vue-virtual-table :config="tableConfig" :data="tableData"> </vue-virtual-table>
 </template>
 
 <script>

@@ -15,13 +15,7 @@
             :style="itemContainerStyle"
         >
             <slot name="before-content" />
-            <component
-                ref="items"
-                :is="contentTag"
-                class="items"
-                :class="contentClass"
-                :style="itemsStyle"
-            >
+            <component ref="items" :is="contentTag" class="items" :class="contentClass" :style="itemsStyle">
                 <slot name="before-item" />
                 <template v-if="renderers">
                     <component
@@ -264,16 +258,12 @@ export default {
 
                         const buffer = parseInt(this.buffer);
                         const poolSize = parseInt(this.poolSize);
-                        const scrollTop =
-                            ~~(scroll.top / poolSize) * poolSize - buffer;
-                        const scrollBottom =
-                            Math.ceil(scroll.bottom / poolSize) * poolSize +
-                            buffer;
+                        const scrollTop = ~~(scroll.top / poolSize) * poolSize - buffer;
+                        const scrollBottom = Math.ceil(scroll.bottom / poolSize) * poolSize + buffer;
 
                         if (
                             !force &&
-                            ((scrollTop === this.$_oldScrollTop &&
-                                scrollBottom === this.$_oldScrollBottom) ||
+                            ((scrollTop === this.$_oldScrollTop && scrollBottom === this.$_oldScrollBottom) ||
                                 this.$_skip)
                         ) {
                             this.$_skip = false;
@@ -298,10 +288,7 @@ export default {
                                 h = heights[i];
                                 if (h < scrollTop) {
                                     a = i;
-                                } else if (
-                                    i < l &&
-                                    heights[i + 1] > scrollTop
-                                ) {
+                                } else if (i < l && heights[i + 1] > scrollTop) {
                                     b = i;
                                 }
                                 i = ~~((a + b) / 2);
@@ -314,12 +301,7 @@ export default {
                             containerHeight = heights[l - 1];
 
                             // Searching for endIndex
-                            for (
-                                endIndex = i;
-                                endIndex < l &&
-                                heights[endIndex] < scrollBottom;
-                                endIndex++
-                            );
+                            for (endIndex = i; endIndex < l && heights[endIndex] < scrollBottom; endIndex++);
                             if (endIndex === -1) {
                                 endIndex = items.length - 1;
                             } else {
@@ -348,10 +330,7 @@ export default {
                             this.$_height !== containerHeight ||
                             this.$_length !== l
                         ) {
-                            this.keysEnabled = !(
-                                startIndex > this.$_endIndex ||
-                                endIndex < this.$_startIndex
-                            );
+                            this.keysEnabled = !(startIndex > this.$_endIndex || endIndex < this.$_startIndex);
 
                             this.itemContainerStyle = {
                                 height: containerHeight + "px",
@@ -362,26 +341,16 @@ export default {
 
                             if (this.delayPreviousItems) {
                                 // Add next items
-                                this.visibleItems = items.slice(
-                                    this.$_startIndex,
-                                    endIndex
-                                );
+                                this.visibleItems = items.slice(this.$_startIndex, endIndex);
                                 // Remove previous items
                                 this.$nextTick(() => {
-                                    this.visibleItems = items.slice(
-                                        startIndex,
-                                        endIndex
-                                    );
+                                    this.visibleItems = items.slice(startIndex, endIndex);
                                 });
                             } else {
-                                this.visibleItems = items.slice(
-                                    startIndex,
-                                    endIndex
-                                );
+                                this.visibleItems = items.slice(startIndex, endIndex);
                             }
 
-                            this.emitUpdate &&
-                                this.$emit("update", startIndex, endIndex);
+                            this.emitUpdate && this.$emit("update", startIndex, endIndex);
 
                             this.$_startIndex = startIndex;
                             this.$_endIndex = endIndex;
@@ -445,9 +414,7 @@ export default {
         handleVisibilityChange(isVisible, entry) {
             if (
                 this.$_ready &&
-                (isVisible ||
-                    entry.boundingClientRect.width !== 0 ||
-                    entry.boundingClientRect.height !== 0)
+                (isVisible || entry.boundingClientRect.width !== 0 || entry.boundingClientRect.height !== 0)
             ) {
                 this.$emit("visible");
                 this.$nextTick(() => {

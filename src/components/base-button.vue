@@ -1,8 +1,5 @@
 <template>
-    <button
-        class="base-button"
-        :class="{ [type + '-btn']: true, disabled: disabled }"
-    >
+    <button class="base-button" :class="{ [type + '-btn']: true, disabled: disabled }">
         <slot></slot>
     </button>
 </template>
