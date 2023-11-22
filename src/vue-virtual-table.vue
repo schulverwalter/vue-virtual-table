@@ -1245,10 +1245,16 @@ export default defineComponent({
             this.handleClickConfirmFilter(index);
         },
         handleChangeFilter(val) {},
+        /**
+         * @param {any} val
+         * @param {"asc" | "desc"} direction
+         * @param {boolean} forse
+         */
         handleClickSort(val, direction, forse) {
             let self = this;
             if (self.sortParam.col === val && self.sortParam.direction === direction && !forse) {
-                return;
+                const other = direction === "desc" ? "asc" : "desc";
+                return this.handleClickSort(val, other, forse);
             }
             if (!self.dataTemp[0] || !val) {
                 return;
