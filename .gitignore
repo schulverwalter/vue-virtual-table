@@ -4,5 +4,4 @@ yarn.lock
 .env*
 *.tgz
 .helix
-package-lock.json
 jsconfig.json
