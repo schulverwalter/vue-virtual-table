@@ -50,8 +50,8 @@ $danger-color: #f56c6c;
     border-color: #dcdfe6;
     &:hover {
         color: $default-color;
-        background-color: transparentize($default-color, 0.9);
-        border-color: transparentize($default-color, 0.8);
+        background-color: rgba($default-color, 0.1);
+        border-color: rgba($default-color, 0.2);
     }
     &.disabled:hover {
         color: #606266;
@@ -62,8 +62,8 @@ $danger-color: #f56c6c;
 
 .primary-btn {
     color: $default-color;
-    background-color: transparentize($default-color, 0.9);
-    border-color: transparentize($default-color, 0.8);
+    background-color: rgba($default-color, 0.1);
+    border-color: rgba($default-color, 0.2);
     &:hover {
         color: #fff;
         background-color: $default-color;
@@ -71,14 +71,14 @@ $danger-color: #f56c6c;
     }
     &.disabled:hover {
         color: $default-color;
-        background-color: transparentize($default-color, 0.9);
-        border-color: transparentize($default-color, 0.8);
+        background-color: rgba($default-color, 0.1);
+        border-color: rgba($default-color, 0.2);
     }
 }
 .danger-btn {
     color: $danger-color;
-    background-color: transparentize($danger-color, 0.9);
-    border-color: transparentize($danger-color, 0.8);
+    background-color: rgba($danger-color, 0.1);
+    border-color: rgba($danger-color, 0.2);
     &:hover {
         color: #fff;
         background-color: $danger-color;
@@ -86,8 +86,8 @@ $danger-color: #f56c6c;
     }
     &.disabled:hover {
         color: $danger-color;
-        background-color: transparentize($danger-color, 0.9);
-        border-color: transparentize($danger-color, 0.8);
+        background-color: rgba($danger-color, 0.1);
+        border-color: rgba($danger-color, 0.2);
     }
 }
 </style>

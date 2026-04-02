@@ -27,12 +27,9 @@ export default {
     components: {
         BaseIcon,
     },
-    model: {
-        prop: "checkedValue",
-        event: "change",
-    },
+    emits: ["update:modelValue", "change"],
     props: {
-        checkedValue: Array,
+        modelValue: Array,
         choiceList: {
             type: Array,
             default: function () {
@@ -41,7 +38,7 @@ export default {
         },
     },
     watch: {
-        checkedValue() {
+        modelValue() {
             this.init();
         },
     },
@@ -55,7 +52,7 @@ export default {
     },
     methods: {
         init() {
-            this.checkedGroup = this.checkedValue.slice();
+            this.checkedGroup = this.modelValue.slice();
         },
         clickItem(checkItem) {
             let index = this.checkedGroup.indexOf(checkItem);
@@ -64,6 +61,7 @@ export default {
             } else {
                 this.checkedGroup.push(checkItem);
             }
+            this.$emit("update:modelValue", this.checkedGroup);
             this.$emit("change", this.checkedGroup);
         },
     },

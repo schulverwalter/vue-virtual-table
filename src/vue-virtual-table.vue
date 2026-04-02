@@ -11,7 +11,7 @@
                     icon-color="#bbbbbb"
                     width="20"
                     height="20"
-                    @click.native="handleExportTable"
+                    @click="handleExportTable"
                     class="download-icon"
                 ></base-icon>
             </div>
@@ -28,9 +28,8 @@
                                 <div class="header-cell-inner search-wrapper" v-if="item.searchable">
                                     <base-popover :width="340" :boundary="$refs.mainScroll">
                                         <div style="padding: 10px; text-align: left; font-size: 0">
-                                            <template v-for="(phrase, ph_index) in item.searchPhrase">
+                                            <template v-for="(phrase, ph_index) in item.searchPhrase" :key="ph_index">
                                                 <base-select
-                                                    :key="'s_' + ph_index"
                                                     v-model="phrase.operator"
                                                     @change="handleClickConfirmFilter(configIndex)"
                                                     :choice-list="
@@ -41,7 +40,6 @@
                                                     "
                                                 ></base-select>
                                                 <base-input
-                                                    :key="'in_' + ph_index"
                                                     v-model="phrase.value"
                                                     @change="handleClickConfirmFilter(configIndex)"
                                                     style="margin: 0 5px 6px 5px; width: 210px"
@@ -49,21 +47,20 @@
                                                     auto-focus
                                                 ></base-input>
                                                 <base-icon
-                                                    :key="'ic_' + ph_index"
                                                     icon-name="closeAlt2"
                                                     icon-color="#c0c4cc"
                                                     style="margin-top: 9px"
                                                     width="13"
                                                     height="13"
                                                     v-show="ph_index > 0"
-                                                    @click.native="removePhraseFilter(configIndex, ph_index)"
+                                                    @click="removePhraseFilter(configIndex, ph_index)"
                                                 ></base-icon>
                                             </template>
                                             <div style="display: flex">
                                                 <base-button
                                                     class="btn filterBtnEmpty"
                                                     type="primary"
-                                                    @click.native="addFilterPhrase(configIndex)"
+                                                    @click="addFilterPhrase(configIndex)"
                                                     :disabled="item.searchPhrase.length >= phraseLimit"
                                                     >{{
                                                         languageOptions[language].phraseFilter["and_btn"]
@@ -73,7 +70,7 @@
                                                     class="btn filterBtnEmpty"
                                                     style="margin-left: 5px"
                                                     type="danger"
-                                                    @click.native="handleClickEmptyPhraseFilter(configIndex)"
+                                                    @click="handleClickEmptyPhraseFilter(configIndex)"
                                                     >{{
                                                         languageOptions[language].phraseFilter["clear_btn"]
                                                     }}</base-button
@@ -81,24 +78,26 @@
                                             </div>
                                         </div>
 
-                                        <span slot="reference">
-                                            <span
-                                                v-if="item.name"
-                                                :class="{
-                                                    searched:
-                                                        item.searchPhrase.findIndex((v) => v.value != '') > -1,
-                                                }"
-                                                >{{ item.name }}</span
-                                            >
-                                            <span
-                                                v-else
-                                                :class="{
-                                                    searched:
-                                                        item.searchPhrase.findIndex((v) => v.value != '') > -1,
-                                                }"
-                                                >{{ item.prop }}</span
-                                            >
-                                        </span>
+                                        <template #reference>
+                                            <span>
+                                                <span
+                                                    v-if="item.name"
+                                                    :class="{
+                                                        searched:
+                                                            item.searchPhrase.findIndex((v) => v.value != '') > -1,
+                                                    }"
+                                                    >{{ item.name }}</span
+                                                >
+                                                <span
+                                                    v-else
+                                                    :class="{
+                                                        searched:
+                                                            item.searchPhrase.findIndex((v) => v.value != '') > -1,
+                                                    }"
+                                                    >{{ item.prop }}</span
+                                                >
+                                            </span>
+                                        </template>
                                     </base-popover>
                                 </div>
                                 <div class="header-cell-inner filter-wrapper" v-else-if="item.filterable">
@@ -113,7 +112,7 @@
                                             <div class="filter-btn">
                                                 <base-button
                                                     type="primary"
-                                                    @click.native="handleClickConfirmFilter(configIndex)"
+                                                    @click="handleClickConfirmFilter(configIndex)"
                                                     >{{
                                                         languageOptions[language].selectFilter["confirm_btn"]
                                                     }}</base-button
@@ -121,7 +120,7 @@
                                                 <base-button
                                                     type="primary"
                                                     style="margin-left: 5px"
-                                                    @click.native="handleClickReverseFilter(configIndex)"
+                                                    @click="handleClickReverseFilter(configIndex)"
                                                     >{{
                                                         languageOptions[language].selectFilter["reverse_btn"]
                                                     }}</base-button
@@ -129,39 +128,41 @@
                                                 <base-button
                                                     type="danger"
                                                     style="margin-left: 5px"
-                                                    @click.native="handleClickClearFilter(configIndex)"
+                                                    @click="handleClickClearFilter(configIndex)"
                                                     >{{
                                                         languageOptions[language].selectFilter["clear_btn"]
                                                     }}</base-button
                                                 >
                                             </div>
                                         </div>
-                                        <span slot="reference">
-                                            <span
-                                                v-if="item.name"
-                                                :class="{
-                                                    filtered:
-                                                        item.filterSelectedOptions &&
-                                                        item.filterSelectedOptions.length,
-                                                }"
-                                                >{{ item.name }}</span
-                                            >
-                                            <span
-                                                v-else
-                                                :class="{
-                                                    filtered:
-                                                        item.filterSelectedOptions &&
-                                                        item.filterSelectedOptions.length,
-                                                }"
-                                                >{{ item.key || item.prop }}</span
-                                            >
-                                            <base-icon
-                                                icon-name="arrowCarrotDown"
-                                                icon-color="#c0c4cc"
-                                                width="16"
-                                                height="16"
-                                            ></base-icon>
-                                        </span>
+                                        <template #reference>
+                                            <span>
+                                                <span
+                                                    v-if="item.name"
+                                                    :class="{
+                                                        filtered:
+                                                            item.filterSelectedOptions &&
+                                                            item.filterSelectedOptions.length,
+                                                    }"
+                                                    >{{ item.name }}</span
+                                                >
+                                                <span
+                                                    v-else
+                                                    :class="{
+                                                        filtered:
+                                                            item.filterSelectedOptions &&
+                                                            item.filterSelectedOptions.length,
+                                                    }"
+                                                    >{{ item.key || item.prop }}</span
+                                                >
+                                                <base-icon
+                                                    icon-name="arrowCarrotDown"
+                                                    icon-color="#c0c4cc"
+                                                    width="16"
+                                                    height="16"
+                                                ></base-icon>
+                                            </span>
+                                        </template>
                                     </base-popover>
                                 </div>
                                 <div class="header-cell-inner numFiltered-wrapper" v-else-if="item.numberFilter">
@@ -205,29 +206,31 @@
                                                 <base-button
                                                     style="margin-top: 10px"
                                                     type="danger"
-                                                    @click.native="handleClickEmptyNumberFilter(configIndex)"
+                                                    @click="handleClickEmptyNumberFilter(configIndex)"
                                                     >{{
                                                         languageOptions[language].numberFilter["clear_btn"]
                                                     }}</base-button
                                                 >
                                             </div>
                                         </div>
-                                        <span slot="reference">
-                                            <span
-                                                v-if="item.name"
-                                                :class="{
-                                                    numFiltered: item.numberFilterPhrase.value[0] !== '',
-                                                }"
-                                                >{{ item.name }}</span
-                                            >
-                                            <span
-                                                v-else
-                                                :class="{
-                                                    numFiltered: item.numberFilterPhrase.value[0] !== '',
-                                                }"
-                                                >{{ item.prop }}</span
-                                            >
-                                        </span>
+                                        <template #reference>
+                                            <span>
+                                                <span
+                                                    v-if="item.name"
+                                                    :class="{
+                                                        numFiltered: item.numberFilterPhrase.value[0] !== '',
+                                                    }"
+                                                    >{{ item.name }}</span
+                                                >
+                                                <span
+                                                    v-else
+                                                    :class="{
+                                                        numFiltered: item.numberFilterPhrase.value[0] !== '',
+                                                    }"
+                                                    >{{ item.prop }}</span
+                                                >
+                                            </span>
+                                        </template>
                                     </base-popover>
                                 </div>
                                 <div class="header-cell-inner" v-else>
@@ -302,7 +305,7 @@
                     pool-size="500"
                     ref="scroller"
                 >
-                    <template slot-scope="props">
+                    <template v-slot="props">
                         <div
                             class="item-line"
                             @click="handleClickItem(props.item, $event)"
@@ -350,15 +353,16 @@
                                                     name="expand"
                                                 />
                                             </div>
-                                            <base-icon
-                                                icon-name="arrowCarrotRight"
-                                                icon-color="#c0c4cc"
-                                                width="16"
-                                                height="16"
-                                                slot="reference"
-                                                style="cursor: pointer"
-                                                @click.native="handleClickExpand"
-                                            ></base-icon>
+                                            <template #reference>
+                                                <base-icon
+                                                    icon-name="arrowCarrotRight"
+                                                    icon-color="#c0c4cc"
+                                                    width="16"
+                                                    height="16"
+                                                    style="cursor: pointer"
+                                                    @click="handleClickExpand"
+                                                ></base-icon>
+                                            </template>
                                         </base-popover>
                                     </div>
                                     <div
@@ -442,7 +446,7 @@
                                                         width="13"
                                                         height="13"
                                                         style="cursor: pointer"
-                                                        @click.native="handleClickCopy(props.item, item.eTip)"
+                                                        @click="handleClickCopy(props.item, item.eTip)"
                                                     ></base-icon>
                                                 </div>
                                             </template>
@@ -501,15 +505,16 @@
                             <span v-if="item.prop === '_expand' && item.expandSummary">
                                 <base-popover :width="mainWidth - 54" :boundary="$refs.mainScroll">
                                     <slot :data="dataTemp" name="summary" />
-                                    <base-icon
-                                        icon-name="arrowCarrotRight"
-                                        icon-color="#c0c4cc"
-                                        width="16"
-                                        height="16"
-                                        slot="reference"
-                                        style="cursor: pointer"
-                                        @click.native="handleClickExpand"
-                                    ></base-icon>
+                                    <template #reference>
+                                        <base-icon
+                                            icon-name="arrowCarrotRight"
+                                            icon-color="#c0c4cc"
+                                            width="16"
+                                            height="16"
+                                            style="cursor: pointer"
+                                            @click="handleClickExpand"
+                                        ></base-icon>
+                                    </template>
                                 </base-popover>
                             </span>
                             <span v-if="item.prefix">{{ item.prefix }}</span>
@@ -940,10 +945,10 @@ export default defineComponent({
                     last_item = {};
                 }
                 if (!v.width) {
-                    self.$set(v, "width", "auto");
+                    v.width = "auto";
                 }
                 if (!v.filterTag) {
-                    self.$set(v, "filterTag", {});
+                    v.filterTag = {};
                 }
                 if (v.filterable) {
                     let options = self.dataInitTemp.reduce((prev, curr) => {
@@ -953,7 +958,7 @@ export default defineComponent({
                         return prev;
                     }, []);
                     let filterOptions = [...new Set(options)].sort((a, b) => a.localeCompare(b));
-                    self.$set(v, "filterOptions", filterOptions);
+                    v.filterOptions = filterOptions;
                     let selecetedOptions = last_item["filterSelectedOptions"] || [];
                     let l = selecetedOptions.length;
                     for (let index = l - 1; index >= 0; index--) {
@@ -961,21 +966,21 @@ export default defineComponent({
                             selecetedOptions.splice(index, 1);
                         }
                     }
-                    self.$set(v, "filterSelectedOptions", selecetedOptions);
-                    self.$set(v, "filterVisible", false);
+                    v.filterSelectedOptions = selecetedOptions;
+                    v.filterVisible = false;
                 }
                 if (v.searchable) {
                     let searchPhrase = last_item["searchPhrase"] || [{ operator: "in", value: "" }];
-                    self.$set(v, "searchPhrase", searchPhrase);
-                    self.$set(v, "searchVisible", false);
+                    v.searchPhrase = searchPhrase;
+                    v.searchVisible = false;
                 }
                 if (v.numberFilter) {
                     let filterPhrase = last_item["numberFilterPhrase"] || {
                         operator: "le",
                         value: ["", ""],
                     };
-                    self.$set(v, "numberFilterPhrase", filterPhrase);
-                    self.$set(v, "numberFilterVisible", false);
+                    v.numberFilterPhrase = filterPhrase;
+                    v.numberFilterVisible = false;
                 }
             });
         },
@@ -1198,7 +1203,7 @@ export default defineComponent({
             });
             self.dataTemp = temp;
             if (index != undefined && self.configTemp[index]) {
-                self.$set(self.configTemp[index], "filterVisible", false);
+                self.configTemp[index].filterVisible = false;
             }
             self.handleClickSort(self.sortParam.col, self.sortParam.direction, true);
             self.refreshSummary();
@@ -1221,7 +1226,7 @@ export default defineComponent({
         handleClickEmptyNumberFilter(index) {
             this.configTemp[index].numberFilterPhrase.value = ["", ""];
             this.handleClickConfirmFilter(index);
-            this.$set(this.configTemp[index], "numberFilterVisible", false);
+            this.configTemp[index].numberFilterVisible = false;
         },
         addFilterPhrase(index) {
             if (this.configTemp[index].searchPhrase.length >= this.phraseLimit) {

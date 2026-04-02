@@ -2,8 +2,8 @@
     <input
         :type="type"
         name=""
-        :value="inputValue"
-        @change="$emit('change', $event.target.value)"
+        :value="modelValue"
+        @change="$emit('update:modelValue', $event.target.value); $emit('change', $event.target.value)"
         class="input-box"
         :placeholder="placeholder"
         ref="input"
@@ -17,12 +17,9 @@ export default {
     directives: {
         ObserveVisibility,
     },
-    model: {
-        prop: "inputValue",
-        event: "change",
-    },
+    emits: ["update:modelValue", "change"],
     props: {
-        inputValue: [String, Number],
+        modelValue: [String, Number],
         type: {
             type: String,
             default: "text",

@@ -1,11 +1,11 @@
 // Import vue component
 import component from "./vue-virtual-table.vue";
 
-// install function executed by Vue.use()
-function install(Vue) {
+// install function executed by app.use()
+function install(app) {
     if (install.installed) return;
     install.installed = true;
-    Vue.component("VueVirtualTable", component);
+    app.component("VueVirtualTable", component);
 }
 
 // Create module definition for Vue.use()

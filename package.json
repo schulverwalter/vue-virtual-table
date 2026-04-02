@@ -37,26 +37,27 @@
         "registry": "https://registry.npmjs.org"
     },
     "dependencies": {
-        "floating-vue": "^1.0.0-beta.17",
-        "vue-observe-visibility": "^0.4.3",
-        "vue-resize": "^1.0.1"
+        "floating-vue": "^2.0.0",
+        "vue-observe-visibility": "^1.0.0",
+        "vue-resize": "^2.0.0-alpha.1"
     },
     "devDependencies": {
         "@babel/core": "^7.4.3",
         "@rollup/plugin-node-resolve": "^8.1.0",
+        "@vue/compiler-sfc": "^3.0.0",
         "cross-env": "^5.2.0",
         "minimist": "^1.2.0",
-        "sass": "^1.70.0",
-        "rollup": "^1.32.1",
+        "rollup": "^2.0.0",
         "rollup-plugin-babel": "^4.3.2",
         "rollup-plugin-buble": "^0.19.6",
         "rollup-plugin-commonjs": "^9.2.1",
         "rollup-plugin-css-only": "^2.1.0",
         "rollup-plugin-replace": "^2.1.0",
-        "rollup-plugin-terser": "^4.0.4",
-        "rollup-plugin-vue": "^4.7.2",
+        "rollup-plugin-scss": "^4.0.1",
+        "rollup-plugin-terser": "^5.0.0",
+        "rollup-plugin-vue": "^6.0.0",
+        "sass": "^1.70.0",
         "sass-loader": "^7.1.0",
-        "vue": "^2.6.8",
-        "vue-template-compiler": "^2.6.8"
+        "vue": "^3.0.0"
     }
 }

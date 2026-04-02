@@ -167,11 +167,11 @@ export default {
 .slidedown-leave-active {
     transition: all ease 0.2s;
 }
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
     opacity: 0;
 }
-.slidedown-enter,
+.slidedown-enter-from,
 .slidedown-leave-to {
     transform: scaleY(0);
 }

@@ -6,7 +6,7 @@ import replace from 'rollup-plugin-replace'
 import { terser } from 'rollup-plugin-terser'
 import minimist from 'minimist'
 import resolve from '@rollup/plugin-node-resolve';
-import css from 'rollup-plugin-css-only'
+import scss from 'rollup-plugin-scss'
 
 const argv = minimist(process.argv.slice(2))
 
@@ -16,8 +16,6 @@ const baseConfig = {
     replace({
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
-    resolve(),
-    commonjs(),
     vue({
       css: true,
       compileTemplate: true,
@@ -25,7 +23,9 @@ const baseConfig = {
         isProduction: true
       }
     }),
-    css(),
+    resolve(),
+    commonjs(),
+    scss({ output: false }),
     babel()
   ]
 }

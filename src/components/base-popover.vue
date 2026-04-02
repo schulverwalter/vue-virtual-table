@@ -28,20 +28,21 @@ export default {
     directives: {
         ObserveVisibility,
         "click-out-side": {
-            bind(el, binding, vnode) {
+            created(el, binding) {
                 el.clickOutsideEvent = (event) => {
+                    const instance = binding.instance;
                     if (
-                        !(el == event.target || el.contains(event.target) || !vnode.context.isShow) ||
-                        vnode.context.clickToClose
+                        !(el == event.target || el.contains(event.target) || !instance.isShow) ||
+                        instance.clickToClose
                     ) {
-                        vnode.context[binding.expression](event);
+                        binding.value(event);
                     }
                 };
                 setTimeout((_) => {
                     document.body.addEventListener("click", el.clickOutsideEvent);
                 }, 0);
             },
-            unbind(el) {
+            unmounted(el) {
                 document.body.removeEventListener("click", el.clickOutsideEvent);
             },
         },
@@ -183,11 +184,11 @@ export default {
 .slidedown-leave-active {
     transition: all ease 0.2s;
 }
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
     opacity: 0;
 }
-.slidedown-enter,
+.slidedown-enter-from,
 .slidedown-leave-to {
     transform: scaleY(0);
 }

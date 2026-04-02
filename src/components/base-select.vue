@@ -10,19 +10,21 @@
                 {{ option.label }}
             </div>
         </div>
-        <div slot="reference" class="select-box" :style="{ width: width + 'px' }">
-            {{ selected.label }}
-            <div class="arrow-side">
-                <base-icon
-                    icon-name="arrowCarrotDown"
-                    :style="{ transform: 'rotate(' + arrowRotate + 'deg)' }"
-                    class="select-arrow"
-                    icon-color="#909399"
-                    width="16"
-                    height="16"
-                ></base-icon>
+        <template #reference>
+            <div class="select-box" :style="{ width: width + 'px' }">
+                {{ selected.label }}
+                <div class="arrow-side">
+                    <base-icon
+                        icon-name="arrowCarrotDown"
+                        :style="{ transform: 'rotate(' + arrowRotate + 'deg)' }"
+                        class="select-arrow"
+                        icon-color="#909399"
+                        width="16"
+                        height="16"
+                    ></base-icon>
+                </div>
             </div>
-        </div>
+        </template>
     </BasePopover>
 </template>
 <script>
@@ -33,10 +35,7 @@ export default {
         BasePopover,
         BaseIcon,
     },
-    model: {
-        prop: "selectedValue",
-        event: "change",
-    },
+    emits: ["update:modelValue", "change"],
     props: {
         choiceList: {
             type: Array,
@@ -44,7 +43,7 @@ export default {
                 return [];
             },
         },
-        selectedValue: [String, Number],
+        modelValue: [String, Number],
         width: {
             type: Number,
             default: 80,
@@ -56,8 +55,13 @@ export default {
             arrowRotate: 0,
         };
     },
+    watch: {
+        modelValue(val) {
+            this.updateSelected(val);
+        },
+    },
     mounted() {
-        this.updateSelected(this.selectedValue);
+        this.updateSelected(this.modelValue);
     },
     methods: {
         updateSelected(val) {
@@ -74,6 +78,7 @@ export default {
             }
         },
         updateChoice(option) {
+            this.$emit("update:modelValue", option.value);
             this.$emit("change", option.value);
             this.updateSelected(option.value);
             // this.selected
