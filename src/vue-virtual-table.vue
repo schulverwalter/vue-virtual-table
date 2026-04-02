@@ -307,6 +307,7 @@
                 >
                     <template v-slot="props">
                         <div
+                            v-if="props && props.item"
                             class="item-line"
                             @click="handleClickItem(props.item, $event)"
                             @contextmenu="$emit('contextmenu', props.item, $event)"
